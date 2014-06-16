@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8">
+    <title>divide</title>
+    <style type="text/css">
+
+	.top20 {margin-top: 30px}
+	.gray {background: #cc9; padding: 5px}
+	.blue {background: #3cf; padding: 5px}
+	.red {background: #e76; padding: 5px}
+	.hide {display:none}
+
+	</style>
+    <script type="text/javascript" src="/javascripts/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+	<div class="top20">
+    	<input type="text" name="word" id="word" maxlength="100" style="width:484px;">
+    	<input type="submit" value="search" id="search">
+	</div>
+	<div>
+		<h2 id="wordText">business</h2>
+	</div>
+	<div class="blue">
+		<p><span><b lang="EN-US" xml:lang="EN-US" id="pronounce">[ˈbɪznɪs]</b></span></p>	
+		<p><span id="translation">商业，交易；生意；事务，业务；职业，行业</span></p>
+	</div>
+	<div class="top20 gray">
+		<p><span><b lang="EN-US" xml:lang="EN-US" id="dividedPronounce">ˈbɪ-z-nɪ-s</b></span></p>
+	</div>
+	<div id="wrongDiv" class="top20 red hide">
+		<p>This is hide div</p>
+	</div>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$("#search").click(function() {
+			var word = $("#word").val();
+			console.log(word);
+			if (word.length === 0) {
+				return;
+			}
+			$("#wordText").text($("#word").val())
+			$.ajax({
+      			url: '/w/' + word,
+            	type: 'GET',
+	            success: function(data){
+	                console.log('success!')
+	                // console.log(data.toString());
+	                console.log(data)
+	                console.log(typeof(data))
+	                var obj = JSON.parse(data);
+	                if ("error" in obj) {
+	                	$("#wrongDiv").removeClass("hide");
+	                	$(".blue").addClass("hide");
+	                	$(".gray").addClass("hide");
+	                	$("#wrongDiv > p").text(obj["error"]);
+	                } else {
+	                	$("#wrongDiv").addClass("hide");
+	                	$(".blue").removeClass("hide");
+	                	$(".gray").removeClass("hide");
+	                	$("#pronounce").text(obj["pronounce"]);
+	                	$("#translation").html(obj["translation"]);
+	                	$("#dividedPronounce").html(obj["dividedPronounce"]);
+	            	}
+	            },
+	            error: function(xmlHTTPRequest, status, error){
+	                console.log(status);
+	                alert('ajax error!');
+	            }
+        	});
+		});
+	});
+	</script>
+</body>
+</html>
