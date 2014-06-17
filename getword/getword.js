@@ -21,11 +21,6 @@ exports.getAndDivide = function(req, res) {
                 buffers[i].copy(buffer, pos);
                 pos += buffers[i].length;
             }
-            // // 'content-type': 'text/html;charset=gbk'
-            // // 百度返回的页面数据流竟然还无法使用gbk完全解码。。
-            // var gbk_to_utf8_iconv = new Iconv('GBK', 'UTF-8//TRANSLIT//IGNORE');
-            // var utf8_buffer = gbk_to_utf8_iconv.convert(buffer);
-            // console.log(buffer.toString());
             var retObj = {};
 
             var htmlText = buffer.toString();
