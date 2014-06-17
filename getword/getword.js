@@ -29,7 +29,7 @@ exports.getAndDivide = function(req, res) {
             var retObj = {};
 
             var htmlText = buffer.toString();
-            var errStart = htmlText.indexOf('请查看输入的字词是否有错误');
+            var errStart = htmlText.indexOf('<div class="error-note">');
             if (errStart > 0) {
                 res.end(JSON.stringify({"error": "This is not a word!"}));
                 return;
