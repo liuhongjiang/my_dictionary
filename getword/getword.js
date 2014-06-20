@@ -66,7 +66,7 @@ exports.getAndDivide = function(req, res) {
                 parts = divide.combineBY(parts);
                 console.log(parts);
                 var dividedPronounce = parts.join("-");
-                retObj["pronounce"] = pronounce;
+                retObj["pronounce"] = "[" + pronounce + "]";
                 retObj["dividedPronounce"] = dividedPronounce;
             } else {
                 retObj["pronounce"] = "";
