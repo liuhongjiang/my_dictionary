@@ -22,7 +22,7 @@ allYB = {
 }
 
 // 重读
-ZD = {"ˈ":1, ",":1, "'":1}
+ZD = {"ˈ":1, ",":1, "'":1, "ˌ":1}
 
 // var isyy = function (yb) {
 // 	for (key in allYB) {

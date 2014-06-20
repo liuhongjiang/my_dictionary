@@ -59,6 +59,9 @@ exports.getAndDivide = function(req, res) {
             if (pstart > 0) {
                 var pronounce = htmlText.substring(pstart + pron_html_start.length, pend)
                 console.log("pronounce: " + pronounce);
+                if (pronounce.indexOf(",") > 0) {
+                    pronounce = pronounce.substring(0, pronounce.indexOf(","));
+                }
                 parts = divide.divide(pronounce);
                 parts = divide.combineBY(parts);
                 console.log(parts);
