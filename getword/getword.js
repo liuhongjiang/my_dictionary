@@ -68,6 +68,9 @@ exports.getAndDivide = function(req, res) {
                 var dividedPronounce = parts.join("-");
                 retObj["pronounce"] = "[" + pronounce + "]";
                 retObj["dividedPronounce"] = dividedPronounce;
+                if (req.params.word === "food") {
+                    retObj["dividedSound"] = '<span><a href="javascript:;" class="ico_sound" onmouseout="clearTimeout(timer);" onmouseover="onSecondDelay(\'/sound/fu.mp3\')" onclick="asplay(\'/sound/fu.mp3\');" title="机器发音"></a></span> / <span><a href="javascript:;" class="ico_sound" onmouseout="clearTimeout(timer);" onmouseover="onSecondDelay(\'/sound/d.mp3\')" onclick="asplay(\'/sound/d.mp3\');" title="机器发音"></a></span>';
+                }
             } else {
                 retObj["pronounce"] = "";
                 retObj["dividedPronounce"] = "";

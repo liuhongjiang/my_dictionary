@@ -11,8 +11,24 @@
 	.red {background: #e76; padding: 5px}
 	.hide {display:none}
 
+	.handwrite, .handwrite_over, .drop_down, .drop_down:hover, .ico_sound, .new_word a, .ico, .part_main h3.close a, .part_main h3.open a, .up, .down, .ico_close, .to_top, .to_top:hover, .suggest li, a.example, a.example_up, a.info {
+    background-image: url("../images/bg_index2.gif");
+    background-repeat: no-repeat;
+	}
+	.ico_sound {
+    background-position: 0 -55px;
+    display: inline-block;
+    height: 13px;
+    overflow: hidden;
+    width: 15px;
+}
+.ico_sound:hover {
+    background-position: -15px -55px;
+}
+
 	</style>
     <script type="text/javascript" src="/javascripts/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/javascripts/sound.js"></script>
 </head>
 <body>
 	<div class="top20">
@@ -28,10 +44,15 @@
 	</div>
 	<div class="top20 gray">
 		<p><span><b lang="EN-US" xml:lang="EN-US" id="dividedPronounce">ˈbɪ-z-nɪ-s</b></span></p>
+		
+		<p class="dividedSound">
+		</p>
+
 	</div>
 	<div id="wrongDiv" class="top20 red hide">
 		<p>This is hide div</p>
 	</div>
+
 	<script type="text/javascript">
 	$(document).ready(function(){
 		$("#search").click(function() {
@@ -62,6 +83,11 @@
 	                	$("#pronounce").text(obj["pronounce"]);
 	                	$("#translation").html(obj["translation"]);
 	                	$("#dividedPronounce").html(obj["dividedPronounce"]);
+	                	if ("dividedSound" in obj) {
+	                		$(".dividedSound").html(obj["dividedSound"]);
+	                	} else {
+	                		$(".dividedSound").html("");
+	                	}
 	            	}
 	            },
 	            error: function(xmlHTTPRequest, status, error){
