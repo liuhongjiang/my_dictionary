@@ -3,10 +3,16 @@ var divide = require('./divide1')
 
 exports.getAndDivide = function(req, res) {
     var options = {
-        host: 'dict.youdao.com',
+        host: 'www.iciba.com',
         port: 80,
-        path: '/search?q=' + req.params.word
+        path: '/' + req.params.word
     };
+
+    var tran_html_start = '<div class="group_pos">'
+    var tran_html_end = '</div>'
+    var pron_html_start = '<strong lang="EN-US" xml:lang="EN-US">'
+    var pron_html_end = '</strong>'
+    var error_note = '<div class="question unfound_tips" id="question">';
 
     http.get(options, function(httpres) {
         // console.log("Got response: " + httpres.statusCode, httpres.headers);
@@ -21,31 +27,39 @@ exports.getAndDivide = function(req, res) {
                 buffers[i].copy(buffer, pos);
                 pos += buffers[i].length;
             }
-            var retObj = {};
+            // // 'content-type': 'text/html;charset=gbk'
+            // // 百度返回的页面数据流竟然还无法使用gbk完全解码。。
+            // var gbk_to_utf8_iconv = new Iconv('GBK', 'UTF-8//TRANSLIT//IGNORE');
+            // var utf8_buffer = gbk_to_utf8_iconv.convert(buffer);
+            // console.log(buffer.toString());
+
+            retObj = {}
 
             var htmlText = buffer.toString();
-            var errStart = htmlText.indexOf('<div class="error-note">');
+
+            var errStart = htmlText.indexOf(error_note);
             if (errStart > 0) {
                 res.end(JSON.stringify({"error": "This is not a word!"}));
                 return;
             }
 
-            var start = htmlText.indexOf('<div class="trans-container">');
-            var end = htmlText.indexOf('</div>', start);
+            var start = htmlText.indexOf(tran_html_start);
+            var end = htmlText.indexOf(tran_html_end, start);
+
             if (start > 0) {
-                var translation = htmlText.substring(start + '<div class="trans-container">'.length, end);
+                var translation = htmlText.substring(start + tran_html_start.length, end);
                 console.log(translation);
                 retObj["translation"] = translation;
             }
 
-            var pstart = htmlText.indexOf('<span class="phonetic">');
-            pstart = htmlText.indexOf('<span class="phonetic">', pstart + '<span class="phonetic">'.length);
-            var pend = htmlText.indexOf('</span>', pstart);
+            var pstart = htmlText.indexOf(pron_html_start);
+            pstart = htmlText.indexOf(pron_html_start, pstart + pron_html_start.length);
+            var pend = htmlText.indexOf(pron_html_end, pstart);
        
             if (pstart > 0) {
-                var pronounce = htmlText.substring(pstart + '<span class="phonetic">'.length, pend)
+                var pronounce = htmlText.substring(pstart + pron_html_start.length, pend)
                 console.log("pronounce: " + pronounce);
-                parts = divide.divide(pronounce.substring(1, pronounce.length - 1 ))
+                parts = divide.divide(pronounce);
                 parts = divide.combineBY(parts);
                 console.log(parts);
                 var dividedPronounce = parts.join("-");
@@ -56,6 +70,18 @@ exports.getAndDivide = function(req, res) {
                 retObj["dividedPronounce"] = "";
             }
             res.end(JSON.stringify(retObj));
+
+            // var pstart = htmlText.indexOf(pron_html_start);
+            // pstart = htmlText.indexOf(pron_html_start, pstart + pron_html_start.length);
+            // var pend = htmlText.indexOf(pron_html_end, pstart);
+       
+            // var pronounce = htmlText.substring(pstart + pron_html_start.length, pend)
+            // console.log("pronounce: " + pronounce);
+            // parts = divide.divide(pronounce)
+            // parts = divide.combineBY(parts);
+            // console.log(parts);
+            // var dividedPronounce = parts.join("-");
+            // res.end(JSON.stringify({"translation": translation, "pronounce": pronounce, "dividedPronounce": dividedPronounce}));
             // for (var i = 0; i < pronounce.length; i++) {
             //     console.log(divide.isyy(pronounce[i]));
             // };
