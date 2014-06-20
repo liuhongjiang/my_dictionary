@@ -46,6 +46,7 @@ exports.getAndDivide = function(req, res) {
                 var pronounce = htmlText.substring(pstart + '<span class="phonetic">'.length, pend)
                 console.log("pronounce: " + pronounce);
                 parts = divide.divide(pronounce.substring(1, pronounce.length - 1 ))
+                parts = divide.combineBY(parts);
                 console.log(parts);
                 var dividedPronounce = parts.join("-");
                 retObj["pronounce"] = pronounce;

@@ -1,5 +1,5 @@
 
-test = ["ðo", "ð", "kən,ɡrætʃu'leʃən", "sæm", "dɪ'veləpmənts", "ˈbɪznɪs", "kɑr", "'dʒʊəlri"]
+test = ["ðo", "ð", "kən,ɡrætʃu'leʃən", "sæm", "dɪ'veləpmənts", "ˈbɪznɪs", "kɑr", "'dʒʊəlri", "frʌnt"]
 // test = ["kən,ɡrætʃu'leʃən"]
 // test = ["dɪ'veləpmənts"]
 
@@ -72,7 +72,7 @@ var isBY = function (part) {
 	return part in allYB["BY"];
 }
 
-var combineBY = function (parts) {
+var combineBY = exports.combineBY = function (parts) {
 	if (parts.length <= 1) {
 		return parts;
 	}
