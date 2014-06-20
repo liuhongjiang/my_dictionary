@@ -12,7 +12,7 @@ exports.getAndDivide = function(req, res) {
     var tran_html_end = '</div>'
     var pron_html_start = '<strong lang="EN-US" xml:lang="EN-US">'
     var pron_html_end = '</strong>'
-    var error_note = '<div class="question unfound_tips" id="question">';
+    var error_note = 'class="question unfound_tips"';
 
     http.get(options, function(httpres) {
         // console.log("Got response: " + httpres.statusCode, httpres.headers);
