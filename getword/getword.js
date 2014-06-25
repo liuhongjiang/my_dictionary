@@ -15,7 +15,6 @@ exports.getAndDivide = function(req, res) {
     var error_note = 'class="question unfound_tips"';
 
     http.get(options, function(httpres) {
-        // console.log("Got response: " + httpres.statusCode, httpres.headers);
         var buffers = [], size = 0;
         httpres.on('data', function(buffer) {
             buffers.push(buffer);
@@ -27,11 +26,6 @@ exports.getAndDivide = function(req, res) {
                 buffers[i].copy(buffer, pos);
                 pos += buffers[i].length;
             }
-            // // 'content-type': 'text/html;charset=gbk'
-            // // 百度返回的页面数据流竟然还无法使用gbk完全解码。。
-            // var gbk_to_utf8_iconv = new Iconv('GBK', 'UTF-8//TRANSLIT//IGNORE');
-            // var utf8_buffer = gbk_to_utf8_iconv.convert(buffer);
-            // console.log(buffer.toString());
 
             retObj = {}
 
@@ -48,7 +42,6 @@ exports.getAndDivide = function(req, res) {
 
             if (start > 0) {
                 var translation = htmlText.substring(start + tran_html_start.length, end);
-                console.log(translation);
                 retObj["translation"] = translation;
             }
 
@@ -58,13 +51,11 @@ exports.getAndDivide = function(req, res) {
        
             if (pstart > 0) {
                 var pronounce = htmlText.substring(pstart + pron_html_start.length, pend)
-                console.log("pronounce: " + pronounce);
                 if (pronounce.indexOf(",") > 0) {
                     pronounce = pronounce.substring(0, pronounce.indexOf(","));
                 }
                 parts = divide.divide(pronounce);
                 parts = divide.combineBY(parts);
-                console.log(parts);
                 var dividedPronounce = parts.join("-");
                 retObj["pronounce"] = "[" + pronounce + "]";
                 retObj["dividedPronounce"] = dividedPronounce;
@@ -76,22 +67,6 @@ exports.getAndDivide = function(req, res) {
                 retObj["dividedPronounce"] = "";
             }
             res.end(JSON.stringify(retObj));
-
-            // var pstart = htmlText.indexOf(pron_html_start);
-            // pstart = htmlText.indexOf(pron_html_start, pstart + pron_html_start.length);
-            // var pend = htmlText.indexOf(pron_html_end, pstart);
-       
-            // var pronounce = htmlText.substring(pstart + pron_html_start.length, pend)
-            // console.log("pronounce: " + pronounce);
-            // parts = divide.divide(pronounce)
-            // parts = divide.combineBY(parts);
-            // console.log(parts);
-            // var dividedPronounce = parts.join("-");
-            // res.end(JSON.stringify({"translation": translation, "pronounce": pronounce, "dividedPronounce": dividedPronounce}));
-            // for (var i = 0; i < pronounce.length; i++) {
-            //     console.log(divide.isyy(pronounce[i]));
-            // };
-            //divide.isyy(pronounce);
         });
     }).on('error', function(e) {
         console.log("Got error: " + e.message);

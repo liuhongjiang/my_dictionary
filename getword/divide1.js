@@ -24,31 +24,7 @@ allYB = {
 // 重读
 ZD = {"ˈ":1, ",":1, "'":1, "ˌ":1}
 
-// var isyy = function (yb) {
-// 	for (key in allYB) {
-// 		if (yb in allYB[key]) {
-// 			if (key === "CYY" || key === "DYY" || key === "SYY") {
-// 				return "yy";
-// 			} else if (key === "BY") {
-// 				return "by";
-// 			} else if (key === "ZD") {
-// 				return "zd";
-// 			} else {
-// 				return "fy";
-// 			}
-// 		}
-// 	}
-// 	console.log("-- not yb - " + yb);
-// 	// throw new Error("not yb");
-// 	return false
-// }
-
-// console.log(isyy(test[0]));
-
-// return;
-
 var canDivided = function (yb) {
-	// console.log(yb);
 	for (key in allYB) {
 		if (yb in allYB[key]) {
 			if (key === "CYY" || key === "DYY" || key === "SYY") {
@@ -98,16 +74,11 @@ var divide = exports.divide = function (pronounce) {
 	var startPos = 0;
 	var i = 0;
 	var lastFlag = true;
-	console.log("pronounce in divide: " + pronounce);
 	while (i < pronounce.length) {
 	// for (var i = 0; i < pronounce.length; i++) {
 		debugger;
 		var divideFlag = false;
 		var step = 0;
-		console.log("here")
-		console.log("current index: " + i)
-		console.log(pronounce.substring(i, i + 1));
-		console.log(isZD(pronounce.substring(i, i + 1)))
 		if (isZD(pronounce.substring(i, i + 1))) {
 			if (i !== 0 && startPos < i) {
 				parts.push(pronounce.substring(startPos, i));
@@ -126,12 +97,9 @@ var divide = exports.divide = function (pronounce) {
 				step = 1;
 			}
 		} catch (err) {
-			console.log("lhj catch error");
 			divideFlag = canDivided(pronounce.substring(i, i + 1));
 			step = 1;
 		}
-		console.log(step);
-		console.log(divideFlag);
 		i = i + step;
 		if (divideFlag) {
 			parts.push(pronounce.substring(startPos, i));
@@ -148,9 +116,6 @@ var divide = exports.divide = function (pronounce) {
 		}
 	};
 
-	// console.log("here")
-	// console.log(startPos);
-	// console.log(parts);
 	if (startPos < i) {
 		parts.push(pronounce.substring(startPos, i));
 	}
@@ -158,41 +123,10 @@ var divide = exports.divide = function (pronounce) {
 }
 
 
-
-for (var i = 0; i <= test.length - 1; i++) {
-	// for ( key in yb) {
-	// 	if (test[0].substring(i, i+1) in yb[key]) {
-	// 		console.log("in " + key);
-	// 	}
-	// }
-	// try {
-	// console.log(test[0].substring(i, i+2) + " - " + canDivided(test[0].substring(i, i+2)));
-	// console.log(test[0].substring(i, i+1) + " - " + canDivided(test[0].substring(i, i+1)));
-	// } catch (err) {
-	// 	console.log(err);
-	// }
-	parts = divide(test[i]);
-	console.log(parts);
-	console.log(combineBY(parts));
+if (!module.parent) {
+	for (var i = 0; i <= test.length - 1; i++) {
+		parts = divide(test[i]);
+		console.log(parts);
+		console.log(combineBY(parts));
+	}
 }
-
-// get max ying biao
-// var max = 0;
-// for (key in allYB) {
-// 	for (key1 in allYB[key]) {
-// 		if (max < key1.length ) {
-// 		max = key1.length;
-// 		}
-// 	}
-// }
-// console.log(max)
-
-
-// if (zfy[4] in zfy) {console.log("zfy 4 in zfy")};
-
-// for (var i = zfy.length - 1; i >= 0; i--) {
-// 	if (zfy[4] == zfy[i]) {
-// 		console.log("haha 4");
-// 	}
-// 	console.log(zfy[i])
-// };
